@@ -32,7 +32,8 @@ MESSAGE(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
 # Set our optoins
 OPTION(WANT_QTGUI       "Build Qt based GUI in addition to the library." ON)
-OPTION(WANT_STATIC      "Build static library in addition to dynamic library" OFF)
+OPTION(WANT_STATIC      "Build static library in addition to dynamic library." OFF)
+option(WANT_DOCS        "Build documentation." OFF )
 
 # Platform specific defines
 IF(UNIX)
@@ -124,6 +125,7 @@ ELSE(APPLE)
     SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${DATADIVER_BINARY_DIR}")
 ENDIF(APPLE)
 
-# Setup up our config file
+# Add our projects
 ADD_SUBDIRECTORY(datadiver)
 ADD_SUBDIRECTORY(datadiver-qt)
+ADD_SUBDIRECTORY(docs)
