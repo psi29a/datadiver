@@ -24,9 +24,6 @@
 #ifndef DATADIVER_LIB_H
 #define DATADIVER_LIB_H
 
-/* for WildMidi_GetString */
-#define DD_GS_VERSION		0x0001
-
 /* set our symbol export visiblity */
 #if defined _WIN32 || defined __CYGWIN__
   /* ========== NOTE TO WINDOWS DEVELOPERS:
@@ -63,24 +60,21 @@
 extern "C" {
 #endif
 
-struct _DD_Info {
-	char *copyright;
-	uint32_t current_sample;
-	uint32_t approx_total_samples;
-	uint16_t mixer_options;
-	uint32_t total_midi_time;
-};
+typedef struct DD_context {
+	const char *input_path;
+	const char *output_path;
+	uint32_t *file_location;
+	uint32_t *file_type;
+	uint32_t files_found;
+} DD_context;
 
-typedef void midi;
 
-DD_SYMBOL const char * DataDiver_GetString (uint16_t info);
 DD_SYMBOL long DataDiver_GetVersion (void);
-DD_SYMBOL int DataDiver_Init (const char *config_file, uint16_t rate, uint16_t mixer_options);
-DD_SYMBOL midi * DataDiver_Open (const char *midifile);
-DD_SYMBOL midi * DataDiver_OpenBuffer (uint8_t *midibuffer, uint32_t size);
-DD_SYMBOL int DataDiver_SetOption (midi *handle, uint16_t options, uint16_t setting);
-DD_SYMBOL int DataDiver_GetOption (midi *handle, uint16_t options, uint16_t setting);
-DD_SYMBOL int DataDiver_Shutdown (void);
+DD_SYMBOL DD_context * DataDiver_Open (const char *midifile);
+DD_SYMBOL DD_context * DataDiver_OpenBuffer (uint8_t *buffer, uint32_t size);
+DD_SYMBOL int DataDiver_SetOption (DD_context *context, uint16_t options, uint16_t setting);
+DD_SYMBOL int DataDiver_GetOption (DD_context *context, uint16_t options);
+DD_SYMBOL int DataDiver_Shutdown (DD_context *context);
 
 
 #if defined(__cplusplus)
