@@ -1,5 +1,5 @@
 /*
-	datadriver.hpp
+	datadriver.h
 
 	Datadiver library
 
@@ -60,22 +60,39 @@
 extern "C" {
 #endif
 
-typedef struct DD_context {
-	const char *input_path;
-	const char *output_path;
-	uint32_t *file_location;
-	uint32_t *file_type;
-	uint32_t files_found;
-} DD_context;
+struct dd_context;
+typedef dd_context* dd_handle;
 
-
+/*!
+ * Retrieves the version of the library.
+ *
+ * \return long (our version information in long format)
+ */
 DD_SYMBOL long DataDiver_GetVersion (void);
-DD_SYMBOL DD_context * DataDiver_Open (const char *midifile);
-DD_SYMBOL DD_context * DataDiver_OpenBuffer (uint8_t *buffer, uint32_t size);
-DD_SYMBOL int DataDiver_SetOption (DD_context *context, uint16_t options, uint16_t setting);
-DD_SYMBOL int DataDiver_GetOption (DD_context *context, uint16_t options);
-DD_SYMBOL int DataDiver_Shutdown (DD_context *context);
 
+/*!
+ * Creates the "handle" or context that we use through the life of the file or buffer we are
+ * working with.
+ *
+ * \return dd_handle (a pointer to the location in memory we are working on.)
+ */
+DD_SYMBOL dd_handle * DataDiver_Setup (void);
+
+/*!
+ * Shuts down the "handle" or context and releases the allocated memory.
+ *
+ * \param context (a pointer to our context handle)
+ * \return int (a boolean)
+ */
+DD_SYMBOL int DataDiver_Shutdown (dd_handle *context);
+
+DD_SYMBOL dd_handle * DataDiver_Open (const char *midifile);
+
+DD_SYMBOL dd_handle * DataDiver_OpenBuffer (uint8_t *buffer, uint32_t size);
+
+DD_SYMBOL int DataDiver_SetOption (dd_handle *context, uint16_t options, uint16_t setting);
+
+DD_SYMBOL int DataDiver_GetOption (dd_handle *context, uint16_t options);
 
 #if defined(__cplusplus)
 }

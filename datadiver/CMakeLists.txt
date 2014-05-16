@@ -4,7 +4,7 @@ SET(DATADIVER_SRCS
 )
 
 SET(DATADIVER_HDRS
-    datadiver.hpp
+    datadiver.h
 )
 
 # set our target paths
