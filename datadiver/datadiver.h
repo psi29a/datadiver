@@ -61,7 +61,7 @@ extern "C" {
 #endif
 
 struct _dd_context;
-typedef _dd_context dd_context;
+typedef _dd_context *dd_context;
 
 /*!
  * Retrieves the version of the library.
@@ -76,7 +76,7 @@ DD_SYMBOL long DataDiver_GetVersion (void);
  *
  * \return dd_context (a pointer to the location in memory we are working on.)
  */
-DD_SYMBOL dd_context* DataDiver_CreateContext (void);
+DD_SYMBOL dd_context DataDiver_CreateContext (void);
 
 /*!
  * Shuts down the "handle" or context and releases the allocated memory.
@@ -84,15 +84,15 @@ DD_SYMBOL dd_context* DataDiver_CreateContext (void);
  * \param context (a pointer to our context handle)
  * \return int (a boolean)
  */
-DD_SYMBOL int DataDiver_DestroyContext (dd_context *context);
+DD_SYMBOL int DataDiver_DestroyContext (dd_context context);
 
-DD_SYMBOL int DataDiver_OpenFile (dd_context *context, const char *path);
+DD_SYMBOL int DataDiver_OpenFile (dd_context context, const char *path);
 
-DD_SYMBOL int DataDiver_OpenBuffer (dd_context *context, uint8_t *buffer, uint32_t size);
+DD_SYMBOL int DataDiver_OpenBuffer (dd_context context, uint8_t *buffer, uint32_t size);
 
-DD_SYMBOL int DataDiver_SetOption (dd_context *context, uint16_t option, uint16_t value);
+DD_SYMBOL int DataDiver_SetOption (dd_context context, uint16_t option, uint16_t value);
 
-DD_SYMBOL int DataDiver_GetOption (dd_context *context, uint16_t option);
+DD_SYMBOL int DataDiver_GetOption (dd_context context, uint16_t option);
 
 #if defined(__cplusplus)
 }

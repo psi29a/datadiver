@@ -32,8 +32,8 @@ typedef struct _dd_context {
 } _dd_context;
 
 
-DD_SYMBOL dd_context* DataDiver_CreateContext (void) {
-	dd_context *context = new dd_context;
+DD_SYMBOL dd_context DataDiver_CreateContext (void) {
+	dd_context context = new _dd_context;
 
 	return (context);
 }
