@@ -60,8 +60,8 @@
 extern "C" {
 #endif
 
-struct dd_context;
-typedef dd_context* dd_handle;
+struct _dd_context;
+typedef _dd_context dd_context;
 
 /*!
  * Retrieves the version of the library.
@@ -71,12 +71,12 @@ typedef dd_context* dd_handle;
 DD_SYMBOL long DataDiver_GetVersion (void);
 
 /*!
- * Creates the "handle" or context that we use through the life of the file or buffer we are
+ * Creates a context that we use through the life of the file or buffer we are
  * working with.
  *
- * \return dd_handle (a pointer to the location in memory we are working on.)
+ * \return dd_context (a pointer to the location in memory we are working on.)
  */
-DD_SYMBOL dd_handle * DataDiver_Setup (void);
+DD_SYMBOL dd_context* DataDiver_CreateContext (void);
 
 /*!
  * Shuts down the "handle" or context and releases the allocated memory.
@@ -84,15 +84,15 @@ DD_SYMBOL dd_handle * DataDiver_Setup (void);
  * \param context (a pointer to our context handle)
  * \return int (a boolean)
  */
-DD_SYMBOL int DataDiver_Shutdown (dd_handle *context);
+DD_SYMBOL int DataDiver_DestroyContext (dd_context *context);
 
-DD_SYMBOL dd_handle * DataDiver_Open (const char *midifile);
+DD_SYMBOL int DataDiver_OpenFile (dd_context *context, const char *path);
 
-DD_SYMBOL dd_handle * DataDiver_OpenBuffer (uint8_t *buffer, uint32_t size);
+DD_SYMBOL int DataDiver_OpenBuffer (dd_context *context, uint8_t *buffer, uint32_t size);
 
-DD_SYMBOL int DataDiver_SetOption (dd_handle *context, uint16_t options, uint16_t setting);
+DD_SYMBOL int DataDiver_SetOption (dd_context *context, uint16_t option, uint16_t value);
 
-DD_SYMBOL int DataDiver_GetOption (dd_handle *context, uint16_t options);
+DD_SYMBOL int DataDiver_GetOption (dd_context *context, uint16_t option);
 
 #if defined(__cplusplus)
 }

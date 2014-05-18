@@ -1,5 +1,5 @@
 /*
-	datadriver.hpp
+	datadriver.cpp
 
 	Datadiver library
 
@@ -23,22 +23,17 @@
 
 #include "datadiver.h"
 
-typedef struct DD_context {
+typedef struct _dd_context {
 	const char *input_path;
 	const char *output_path;
 	uint32_t *file_location;
 	uint32_t *file_type;
 	uint32_t files_found;
-} DD_context;
+} _dd_context;
 
 
-/*
- * Creates the "handle" or context that we use through the life of the file or buffer we are
- * working with.
- *
- * :returns: dd_handle* -- (Just the pointer to the location in memory we are working on.)
- */
-DD_SYMBOL dd_handle * DataDiver_Setup (void){
+DD_SYMBOL dd_context* DataDiver_CreateContext (void) {
+	dd_context *context = new dd_context;
 
-	return dd_handle;
+	return (context);
 }
