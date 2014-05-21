@@ -63,6 +63,7 @@ extern "C" {
 struct _dd_context;
 typedef _dd_context *DataDiver;
 
+
 /**
  * Retrieves the version of the library.
  *

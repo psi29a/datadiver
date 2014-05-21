@@ -23,35 +23,48 @@
 
 #include "datadiver.h"
 #include <cstddef>
+//#include <boost/filesystem.hpp>
 
 typedef struct _dd_input {
+	_dd_input(void) {
+		is_file = 0;
+		//boost::filesystem::path = file_path("/");
+		memory_location = NULL;
+	}
 	uint8_t is_file;
-	const char *file_path;
+	//boost::filesystem::path file_path;
 	uint8_t *memory_location;
 } _dd_input;
 
 typedef struct _dd_data {
+	_dd_data(void) {
+		location = NULL;
+		type = NULL;
+		files_found = 0;
+	}
 	uint32_t *location;
 	uint32_t *type;
 	uint32_t files_found;
 } _dd_data;
 
 typedef struct _dd_output {
+	_dd_output(void) {
+		path = "";
+	}
 	const char *path;
 } _dd_output;
 
 typedef struct _dd_context {
+	_dd_context(void) :
+			input(), data(), output() {
+	}
 	_dd_input input;
 	_dd_data data;
 	_dd_output output;
+
 } _dd_context;
 
 DD_SYMBOL DataDiver DataDiver_CreateContext(void) {
-	DataDiver handle = new _dd_context;
-
-	handle->input.file_path = "";
-	handle->input.is_file = 0;
-	handle->input.memory_location = NULL;
-	handle->data.files_found = 0;
+	DataDiver handle = new _dd_context();
 	return (handle);
 }
