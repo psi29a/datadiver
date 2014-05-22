@@ -2,13 +2,13 @@
 Welcome to Datadiver's documentation!
 =====================================
 
-Core Library
-------------
+Components
+----------
 
 .. toctree::
    :maxdepth: 2
    
-   datadiver
+   libdatadiver
 
 
 Indices and tables

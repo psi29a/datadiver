@@ -38,7 +38,7 @@ extensions = [
 ]
 
 # Where breathe can find the source files
-breathe_projects_source = { "datadiver": "@CMAKE_SOURCE_DIR@/datadiver" }
+breathe_projects_source = { "libdatadiver": "@CMAKE_SOURCE_DIR@/libdatadiver" }
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

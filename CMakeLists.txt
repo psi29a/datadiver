@@ -52,7 +52,7 @@ IF(WIN32)
         )
 ENDIF()
 
-# Compiler specific settings
+# ############## Compiler specific settings ###############
 IF(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER_ID}" MATCHES "Clang")
     ADD_DEFINITIONS(
         -Wall -W
@@ -105,14 +105,18 @@ CHECK_INCLUDE_FILE(inttypes.h HAVE_INTTYPES_H)
 
 TEST_BIG_ENDIAN(WORDS_BIGENDIAN)
 
+# ######### Find our required packages ##########
+FIND_PACKAGE(Boost REQUIRED COMPONENTS system filesystem)
+
 # ######### General setup ##########
-#INCLUDE_DIRECTORIES(BEFORE "${CMAKE_SOURCE_DIR}/include")
 FILE (MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/include")
 CONFIGURE_FILE("${CMAKE_SOURCE_DIR}/include/config.h.cmake" "${CMAKE_BINARY_DIR}/include/config.h")
 INCLUDE_DIRECTORIES(BEFORE "${CMAKE_BINARY_DIR}/include")
 IF(NOT HAVE_STDINT_H) # AND NOT HAVE_INTTYPES_H
    INCLUDE_DIRECTORIES(BEFORE "${CMAKE_SOURCE_DIR}/include/stdint")
 ENDIF()
+SET(LIBDATADIVER_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/libdatadiver) # for datadiver.h
+INCLUDE_DIRECTORIES(${LIBDATADIVER_HEADERS})
 
 IF(APPLE)
     SET(APP_BUNDLE_NAME "${CMAKE_PROJECT_NAME}.app")
@@ -125,7 +129,27 @@ ELSE(APPLE)
     SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${DATADIVER_BINARY_DIR}")
 ENDIF(APPLE)
 
-# Add our projects
-ADD_SUBDIRECTORY(datadiver)
+# ############ common libdatadiver #############
+
+# set our target paths
+SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+SET(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+
+# set our library names
+IF(WIN32 AND NOT CMAKE_COMPILER_IS_MINGW) # windows uses *.lib for both static and dynamic, workaround
+    SET(LIBRARY_DYN_NAME "datadiver_dynamic")
+    SET(LIBRARY_STATIC_NAME "datadiver_static")
+ELSE() # everyone else uses .a and .so
+    SET(LIBRARY_DYN_NAME "datadiver")
+    SET(LIBRARY_STATIC_NAME "datadiver")
+ENDIF()
+
+# Set our default and then look at the possible locations
+SET(LIBDATADIVER "${CMAKE_BINARY_DIR}/lib${LIBRARY_DYN_NAME}.so")
+
+# ############ now add our projects ###########
+ADD_SUBDIRECTORY(libdatadiver)
+
+ADD_SUBDIRECTORY(datadiver-nox)
 ADD_SUBDIRECTORY(datadiver-qt)
 ADD_SUBDIRECTORY(docs)

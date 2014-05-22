@@ -1,0 +1,30 @@
+set(DATADIVER_NOX
+    main.cpp
+)
+
+set(DATADIVER_NOX_HEADERS
+    ${LIBDATADIVER_HEADERS}/datadiver.h
+)
+
+# set our target paths
+SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+SET(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+
+# Main executable
+add_executable(datadiver
+    ${DATADIVER_NOX} ${DATADIVER_NOX_HEADERS}
+    #${APPLE_BUNDLE_RESOURCES}
+)
+
+ADD_DEPENDENCIES(datadiver datadiver_dynamic)
+
+TARGET_LINK_LIBRARIES(datadiver
+    ${Boost_LIBRARIES}
+    ${LIBDATADIVER}
+)
+
+MESSAGE(STATUS "HELP: ${LIBDATADIVER}")
+
+if(DPKG_PROGRAM)
+    INSTALL(TARGETS datadiver RUNTIME DESTINATION bin)
+endif(DPKG_PROGRAM)
