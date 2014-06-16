@@ -106,7 +106,7 @@ CHECK_INCLUDE_FILE(inttypes.h HAVE_INTTYPES_H)
 TEST_BIG_ENDIAN(WORDS_BIGENDIAN)
 
 # ######### Find our required packages ##########
-FIND_PACKAGE(Boost REQUIRED COMPONENTS system filesystem)
+FIND_PACKAGE(Boost REQUIRED COMPONENTS system filesystem iostreams)
 
 # ######### General setup ##########
 FILE (MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/include")

@@ -22,9 +22,11 @@
  */
 
 #include "datadiver.h"
+#include <string>
 #include <cstddef>
 #include <vector>
 #include <boost/filesystem.hpp>
+#include <boost/iostreams/device/mapped_file.hpp>
 
 typedef struct _dd_input {
 	_dd_input(void) {
@@ -71,4 +73,22 @@ DD_SYMBOL DataDiver DataDiver_CreateContext(void) {
 DD_SYMBOL int DataDiver_DestroyContext(DataDiver handle) {
 	delete handle;
 	return (0);
+}
+
+DD_SYMBOL int DataDiver_OpenFile(DataDiver handle, const char *path) {
+	handle->input.file_path = path;
+	printf("Help %s\n", handle->input.file_path.c_str());
+	boost::iostreams::mapped_file_source file;
+	int numberOfBytes = 64*1024*1024;	// In MiB
+	file.open(path, numberOfBytes);
+
+	// Check if file was successfully opened
+	if(file.is_open()) {
+		handle->input.pointer = (uint8_t *)file.data();
+		uint8_t temp = handle->input.pointer[0];
+		printf("Help  %02x\n" % temp);
+		return (0);
+	} else {
+		return (1);
+	}
 }
